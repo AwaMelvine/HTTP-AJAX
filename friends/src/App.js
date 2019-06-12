@@ -14,11 +14,16 @@ class App extends Component {
     const friendsData = await axios.get("http://localhost:5000/friends");
     this.setState({ friends: friendsData.data });
   }
+  deleteFriend = id => {
+    this.setState({
+      friends: this.state.friends.filter(item => item.id !== id)
+    });
+  };
   render() {
     const { friends } = this.state;
     return (
       <div className="App">
-        <FriendList friends={friends} />
+        <FriendList friends={friends} deleteFriend={this.deleteFriend} />
       </div>
     );
   }

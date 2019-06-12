@@ -1,6 +1,14 @@
 import React from "react";
+import styled from "styled-components";
 
-export default function Friend({ friend, sn }) {
+const DeleteButton = styled.span`
+  &:hover {
+    color: red;
+    cursor: pointer;
+  }
+`;
+
+export default function Friend({ friend, sn, deleteFriend }) {
   return (
     <div>
       <span>{sn}</span>
@@ -9,7 +17,7 @@ export default function Friend({ friend, sn }) {
       <span>{friend.age}</span>
       <span className="action-btns">
         <span>Edit</span>
-        <span>x</span>
+        <DeleteButton onClick={() => deleteFriend(friend.id)}>x</DeleteButton>
       </span>
     </div>
   );
