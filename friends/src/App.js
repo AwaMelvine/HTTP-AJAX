@@ -1,7 +1,17 @@
 import React, { Component } from "react";
 import axios from "axios";
+import styled from "styled-components";
+import "./App.css";
 import FriendList from "./components/Friends/FriendList";
 import FriendForm from "./components/Friends/FriendForm";
+
+const StyledApp = styled.div`
+  width: 50%;
+  margin: 2rem auto;
+  padding: 1rem 2rem;
+  background: white;
+  border-radius: 0.25rem;
+`;
 
 class App extends Component {
   constructor(props) {
@@ -64,7 +74,7 @@ class App extends Component {
   render() {
     const { friends, friend, editing } = this.state;
     return (
-      <div className="App">
+      <StyledApp>
         <FriendForm
           friend={friend}
           editing={editing}
@@ -77,7 +87,7 @@ class App extends Component {
           deleteFriend={this.deleteFriend}
           findFriend={this.findFriend}
         />
-      </div>
+      </StyledApp>
     );
   }
 }
