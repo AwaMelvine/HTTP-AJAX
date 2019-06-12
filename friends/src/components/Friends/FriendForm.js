@@ -2,10 +2,11 @@ import React, { Component } from "react";
 
 export default class FriendForm extends Component {
   render() {
-    const { friend, handleChangeFriend } = this.props;
+    const { friend, handleChangeFriend, handleSubmitFriend } = this.props;
     const { name, email, age } = friend;
     return (
-      <form>
+      <form onSubmit={event => handleSubmitFriend(event)}>
+        <h3>Add Friend</h3>
         <input
           type="text"
           name="name"

@@ -18,16 +18,28 @@ class App extends Component {
   }
   async componentDidMount() {
     const friendsData = await axios.get("http://localhost:5000/friends");
-    this.setState({ friends: friendsData.data });
+    this.setState({ ...this.state, friends: friendsData.data });
   }
   deleteFriend = async id => {
     const { data } = await axios.delete(`http://localhost:5000/friends/${id}`);
-    this.setState({ friends: data });
+    this.setState({ ...this.state, friends: data });
   };
   handleChangeFriend = event => {
     this.setState({
       ...this.state,
       friend: { ...this.state.friend, [event.target.name]: event.target.value }
+    });
+  };
+  handleSubmitFriend = async event => {
+    event.preventDefault();
+    const { data } = await axios.post(
+      `http://localhost:5000/friends`,
+      this.state.friend
+    );
+    this.setState({
+      ...this.state,
+      friends: data,
+      friend: { name: "", email: "", age: "" }
     });
   };
   render() {
@@ -37,6 +49,7 @@ class App extends Component {
         <FriendForm
           friend={friend}
           handleChangeFriend={this.handleChangeFriend}
+          handleSubmitFriend={this.handleSubmitFriend}
         />
         <FriendList friends={friends} deleteFriend={this.deleteFriend} />
       </div>
