@@ -1,11 +1,33 @@
 import React from "react";
 import styled from "styled-components";
 
-const DeleteButton = styled.span`
-  &:hover {
-    color: red;
-    cursor: pointer;
+export const FriendStyled = styled.div`
+  display: flex;
+  border-bottom: 1px solid #e0e0e0;
+  padding: 1rem;
+
+  span {
+    flex: 1;
   }
+
+  span.sn {
+    flex: 0.4;
+  }
+
+  span.action-btns {
+    flex: 0.4;
+    display: flex;
+    justify-content: space-between;
+
+    span {
+      flex: 1;
+    }
+  }
+`;
+
+const DeleteButton = styled.span`
+  color: red;
+  cursor: pointer;
 `;
 
 const EditButton = styled.span`
@@ -15,15 +37,14 @@ const EditButton = styled.span`
 
 export default function Friend({ friend, sn, deleteFriend, findFriend }) {
   return (
-    <div>
-      <span>{sn}</span>
+    <FriendStyled>
+      <span className="sn">{sn}</span>
       <span>{friend.name}</span>
-      <span>{friend.email}</span>
       <span>{friend.age}</span>
       <span className="action-btns">
         <EditButton onClick={() => findFriend(friend.id)}>Edit</EditButton>
         <DeleteButton onClick={() => deleteFriend(friend.id)}>x</DeleteButton>
       </span>
-    </div>
+    </FriendStyled>
   );
 }

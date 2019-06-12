@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import styled from "styled-components";
 
-const StyledForm = styled.div`
+const StyledForm = styled.form` 
   width: 50%;
   margin: 0rem auto;
   padding: 1rem;

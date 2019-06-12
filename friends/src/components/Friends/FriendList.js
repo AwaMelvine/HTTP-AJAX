@@ -1,9 +1,23 @@
 import React from "react";
-import Friend from "./Friend";
+import styled from "styled-components";
+import Friend, { FriendStyled } from "./Friend";
+
+const FriendListStyled = styled.div`
+  h3 {
+    text-align: center;
+  }
+`;
 
 export default function FriendList({ friends, deleteFriend, findFriend }) {
   return (
-    <div>
+    <FriendListStyled>
+      <h3>Friend List</h3>
+      <FriendStyled>
+        <span className="sn">SN</span>
+        <span>Name</span>
+        <span>Age</span>
+        <span className="action-btns">Action</span>
+      </FriendStyled>
       {friends.map((friend, index) => (
         <Friend
           key={friend.email}
@@ -13,6 +27,6 @@ export default function FriendList({ friends, deleteFriend, findFriend }) {
           sn={index + 1}
         />
       ))}
-    </div>
+    </FriendListStyled>
   );
 }
