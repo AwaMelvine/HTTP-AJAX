@@ -2,11 +2,29 @@ import React, { Component } from "react";
 
 export default class FriendForm extends Component {
   render() {
-    const { friend, handleChangeFriend, handleSubmitFriend } = this.props;
+    const {
+      friend,
+      editing,
+      handleChangeFriend,
+      handleSubmitFriend,
+      updateFriend
+    } = this.props;
     const { name, email, age } = friend;
+
+    const formTitle = editing ? "Edit Friend" : "Add Friend";
+    const submitBtn = editing ? (
+      <button type="submit">Update Friend</button>
+    ) : (
+      <button type="submit">Add Friend</button>
+    );
+
     return (
-      <form onSubmit={event => handleSubmitFriend(event)}>
-        <h3>Add Friend</h3>
+      <form
+        onSubmit={event =>
+          editing ? updateFriend(event) : handleSubmitFriend(event)
+        }
+      >
+        <h3>{formTitle}</h3>
         <input
           type="text"
           name="name"
@@ -28,7 +46,7 @@ export default class FriendForm extends Component {
           onChange={event => handleChangeFriend(event)}
           placeholder="Age"
         />
-        <button type="submit">Add Friend</button>
+        {submitBtn}
       </form>
     );
   }

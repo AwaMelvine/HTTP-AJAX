@@ -13,7 +13,8 @@ class App extends Component {
         name: "",
         email: "",
         age: ""
-      }
+      },
+      editing: false
     };
   }
   async componentDidMount() {
@@ -32,26 +33,50 @@ class App extends Component {
   };
   handleSubmitFriend = async event => {
     event.preventDefault();
-    const { data } = await axios.post(
-      `http://localhost:5000/friends`,
-      this.state.friend
-    );
+    const { friend } = this.state;
+    const { data } = await axios.post(`http://localhost:5000/friends`, friend);
     this.setState({
       ...this.state,
       friends: data,
       friend: { name: "", email: "", age: "" }
     });
   };
+  findFriend = id => {
+    const friend = this.state.friends.find(friend => friend.id === id);
+    this.setState({ ...this.state, friend, editing: true });
+  };
+  updateFriend = async event => {
+    event.preventDefault();
+    const { friend } = this.state;
+    event.preventDefault();
+    const { data } = await axios.put(
+      `http://localhost:5000/friends/${friend.id}`,
+      friend
+    );
+    this.setState({
+      ...this.state,
+      friends: data,
+      friend: { name: "", email: "", age: "" },
+      editing: false
+    });
+  };
+
   render() {
-    const { friends, friend } = this.state;
+    const { friends, friend, editing } = this.state;
     return (
       <div className="App">
         <FriendForm
           friend={friend}
+          editing={editing}
           handleChangeFriend={this.handleChangeFriend}
           handleSubmitFriend={this.handleSubmitFriend}
+          updateFriend={this.updateFriend}
         />
-        <FriendList friends={friends} deleteFriend={this.deleteFriend} />
+        <FriendList
+          friends={friends}
+          deleteFriend={this.deleteFriend}
+          findFriend={this.findFriend}
+        />
       </div>
     );
   }

@@ -8,7 +8,12 @@ const DeleteButton = styled.span`
   }
 `;
 
-export default function Friend({ friend, sn, deleteFriend }) {
+const EditButton = styled.span`
+  color: green;
+  cursor: pointer;
+`;
+
+export default function Friend({ friend, sn, deleteFriend, findFriend }) {
   return (
     <div>
       <span>{sn}</span>
@@ -16,7 +21,7 @@ export default function Friend({ friend, sn, deleteFriend }) {
       <span>{friend.email}</span>
       <span>{friend.age}</span>
       <span className="action-btns">
-        <span>Edit</span>
+        <EditButton onClick={() => findFriend(friend.id)}>Edit</EditButton>
         <DeleteButton onClick={() => deleteFriend(friend.id)}>x</DeleteButton>
       </span>
     </div>
