@@ -8,7 +8,12 @@ class App extends Component {
     super(props);
 
     this.state = {
-      friends: []
+      friends: [],
+      friend: {
+        name: "",
+        email: "",
+        age: ""
+      }
     };
   }
   async componentDidMount() {
@@ -19,11 +24,20 @@ class App extends Component {
     const { data } = await axios.delete(`http://localhost:5000/friends/${id}`);
     this.setState({ friends: data });
   };
+  handleChangeFriend = event => {
+    this.setState({
+      ...this.state,
+      friend: { ...this.state.friend, [event.target.name]: event.target.value }
+    });
+  };
   render() {
-    const { friends } = this.state;
+    const { friends, friend } = this.state;
     return (
       <div className="App">
-        <FriendForm />
+        <FriendForm
+          friend={friend}
+          handleChangeFriend={this.handleChangeFriend}
+        />
         <FriendList friends={friends} deleteFriend={this.deleteFriend} />
       </div>
     );
