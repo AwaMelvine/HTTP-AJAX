@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import Friend, { FriendStyled } from "./Friend";
 
@@ -11,6 +12,7 @@ const FriendListStyled = styled.div`
 export default function FriendList({ friends, deleteFriend, findFriend }) {
   return (
     <FriendListStyled>
+      <Link to="/add-friend">Add Friend</Link>
       <h3>Friend List</h3>
       <FriendStyled>
         <span className="sn">SN</span>

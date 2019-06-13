@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Route } from "react-router-dom";
 import axios from "axios";
 import styled from "styled-components";
 import "./App.css";
@@ -63,16 +64,41 @@ class App extends Component {
     const { friends, friend, editing } = this.state;
     return (
       <StyledApp>
-        <FriendForm
-          {...friend}
-          editing={editing}
-          handleSubmitFriend={this.handleSubmitFriend}
-          updateFriend={this.updateFriend}
+        <Route
+          exact
+          path="/"
+          render={props => (
+            <FriendList
+              {...props}
+              friends={friends}
+              deleteFriend={this.deleteFriend}
+              findFriend={this.findFriend}
+            />
+          )}
         />
-        <FriendList
-          friends={friends}
-          deleteFriend={this.deleteFriend}
-          findFriend={this.findFriend}
+        <Route
+          path="/add-friend"
+          render={props => (
+            <FriendForm
+              {...props}
+              {...friend}
+              editing={editing}
+              handleSubmitFriend={this.handleSubmitFriend}
+              updateFriend={this.updateFriend}
+            />
+          )}
+        />
+        <Route
+          path="/update-friend"
+          render={props => (
+            <FriendForm
+              {...props}
+              {...friend}
+              editing={editing}
+              handleSubmitFriend={this.handleSubmitFriend}
+              updateFriend={this.updateFriend}
+            />
+          )}
         />
       </StyledApp>
     );

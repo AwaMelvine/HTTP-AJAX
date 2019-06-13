@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 const StyledForm = styled.form`
@@ -78,19 +79,15 @@ export default class FriendForm extends Component {
     const { editing, updateFriend, handleSubmitFriend } = this.props;
     if (editing) {
       updateFriend({ ...this.state, id: this.props.id });
-      this.setState({
-        name: "",
-        age: "",
-        email: ""
-      });
     } else {
       handleSubmitFriend(this.state);
-      this.setState({
-        name: "",
-        age: "",
-        email: ""
-      });
     }
+    this.setState({
+      name: "",
+      age: "",
+      email: ""
+    });
+    this.props.history.push("/");
   };
 
   render() {
@@ -106,6 +103,7 @@ export default class FriendForm extends Component {
 
     return (
       <StyledForm onSubmit={event => this.submit(event)}>
+        <Link to="/">View Friends</Link>
         <h3>{formTitle}</h3>
         <input
           type="text"

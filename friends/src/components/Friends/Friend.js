@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 export const FriendStyled = styled.div`
@@ -30,7 +31,7 @@ const DeleteButton = styled.span`
   cursor: pointer;
 `;
 
-const EditButton = styled.span`
+const EditButton = styled(Link)`
   color: green;
   cursor: pointer;
 `;
@@ -42,7 +43,12 @@ export default function Friend({ friend, sn, deleteFriend, findFriend }) {
       <span>{friend.name}</span>
       <span>{friend.age}</span>
       <span className="action-btns">
-        <EditButton onClick={() => findFriend(friend.id)}>Edit</EditButton>
+        <EditButton
+          to={`/update-friend/${friend.id}`}
+          onClick={() => findFriend(friend.id)}
+        >
+          Edit
+        </EditButton>
         <DeleteButton onClick={() => deleteFriend(friend.id)}>x</DeleteButton>
       </span>
     </FriendStyled>
