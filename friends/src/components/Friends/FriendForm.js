@@ -76,12 +76,21 @@ export default class FriendForm extends Component {
   submit = event => {
     event.preventDefault();
     const { editing, updateFriend, handleSubmitFriend } = this.props;
-    editing ? updateFriend(this.state) : handleSubmitFriend(this.state);
-    this.setState({
-      name: "",
-      age: "",
-      email: ""
-    });
+    if (editing) {
+      updateFriend({ ...this.state, id: this.props.id });
+      this.setState({
+        name: "",
+        age: "",
+        email: ""
+      });
+    } else {
+      handleSubmitFriend(this.state);
+      this.setState({
+        name: "",
+        age: "",
+        email: ""
+      });
+    }
   };
 
   render() {

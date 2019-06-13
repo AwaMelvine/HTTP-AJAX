@@ -51,6 +51,7 @@ class App extends Component {
       this.setState({
         ...this.state,
         friends: data,
+        friend: {},
         editing: false
       });
     } catch (error) {
