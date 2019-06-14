@@ -1,9 +1,12 @@
 import React, { Component } from "react";
+import { Route } from "react-router-dom";
 import axios from "axios";
 import styled from "styled-components";
 import "./App.css";
 import FriendList from "./components/Friends/FriendList";
 import FriendForm from "./components/Friends/FriendForm";
+
+const friendsApi = "http://localhost:5000/friends";
 
 const StyledApp = styled.div`
   width: 50%;
@@ -19,73 +22,83 @@ class App extends Component {
 
     this.state = {
       friends: [],
-      friend: {
-        name: "",
-        email: "",
-        age: ""
-      },
       editing: false
     };
   }
   async componentDidMount() {
-    const friendsData = await axios.get("http://localhost:5000/friends");
+    const friendsData = await axios.get(friendsApi);
     this.setState({ ...this.state, friends: friendsData.data });
   }
   deleteFriend = async id => {
-    const { data } = await axios.delete(`http://localhost:5000/friends/${id}`);
+    const { data } = await axios.delete(`${friendsApi}/${id}`);
     this.setState({ ...this.state, friends: data });
   };
-  handleChangeFriend = event => {
-    this.setState({
-      ...this.state,
-      friend: { ...this.state.friend, [event.target.name]: event.target.value }
-    });
-  };
-  handleSubmitFriend = async event => {
-    event.preventDefault();
-    const { friend } = this.state;
-    const { data } = await axios.post(`http://localhost:5000/friends`, friend);
-    this.setState({
-      ...this.state,
-      friends: data,
-      friend: { name: "", email: "", age: "" }
-    });
+
+  handleSubmitFriend = async friend => {
+    try {
+      const { data } = await axios.post(friendsApi, friend);
+      this.setState({ ...this.state, friends: data });
+    } catch (error) {
+      console.log(error);
+    }
   };
   findFriend = id => {
     const friend = this.state.friends.find(friend => friend.id === id);
     this.setState({ ...this.state, friend, editing: true });
   };
-  updateFriend = async event => {
-    event.preventDefault();
-    const { friend } = this.state;
-    event.preventDefault();
-    const { data } = await axios.put(
-      `http://localhost:5000/friends/${friend.id}`,
-      friend
-    );
-    this.setState({
-      ...this.state,
-      friends: data,
-      friend: { name: "", email: "", age: "" },
-      editing: false
-    });
+  updateFriend = async friend => {
+    try {
+      const { data } = await axios.put(`${friendsApi}/${friend.id}`, friend);
+      this.setState({
+        ...this.state,
+        friends: data,
+        friend: {},
+        editing: false
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   render() {
     const { friends, friend, editing } = this.state;
     return (
       <StyledApp>
-        <FriendForm
-          friend={friend}
-          editing={editing}
-          handleChangeFriend={this.handleChangeFriend}
-          handleSubmitFriend={this.handleSubmitFriend}
-          updateFriend={this.updateFriend}
+        <Route
+          exact
+          path="/"
+          render={props => (
+            <FriendList
+              {...props}
+              friends={friends}
+              deleteFriend={this.deleteFriend}
+              findFriend={this.findFriend}
+            />
+          )}
         />
-        <FriendList
-          friends={friends}
-          deleteFriend={this.deleteFriend}
-          findFriend={this.findFriend}
+        <Route
+          path="/add-friend"
+          render={props => (
+            <FriendForm
+              {...props}
+              {...friend}
+              editing={editing}
+              handleSubmitFriend={this.handleSubmitFriend}
+              updateFriend={this.updateFriend}
+            />
+          )}
+        />
+        <Route
+          path="/update-friend"
+          render={props => (
+            <FriendForm
+              {...props}
+              {...friend}
+              editing={editing}
+              handleSubmitFriend={this.handleSubmitFriend}
+              updateFriend={this.updateFriend}
+            />
+          )}
         />
       </StyledApp>
     );

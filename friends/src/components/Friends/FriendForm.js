@@ -1,7 +1,8 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 
-const StyledForm = styled.form` 
+const StyledForm = styled.form`
   width: 50%;
   margin: 0rem auto;
   padding: 1rem;
@@ -47,15 +48,51 @@ const StyledUpdateButton = styled.button`
 `;
 
 export default class FriendForm extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      name: props.name || "",
+      age: props.age || "",
+      email: props.email || ""
+    };
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      ...this.state,
+      name: nextProps.name,
+      age: nextProps.age,
+      email: nextProps.email
+    });
+  }
+
+  handleChangeFriend = event => {
+    this.setState({
+      ...this.state,
+      [event.target.name]: event.target.value
+    });
+  };
+
+  submit = event => {
+    event.preventDefault();
+    const { editing, updateFriend, handleSubmitFriend } = this.props;
+    if (editing) {
+      updateFriend({ ...this.state, id: this.props.id });
+    } else {
+      handleSubmitFriend(this.state);
+    }
+    this.setState({
+      name: "",
+      age: "",
+      email: ""
+    });
+    this.props.history.push("/");
+  };
+
   render() {
-    const {
-      friend,
-      editing,
-      handleChangeFriend,
-      handleSubmitFriend,
-      updateFriend
-    } = this.props;
-    const { name, email, age } = friend;
+    const { editing } = this.props;
+    const { name, email, age } = this.state;
 
     const formTitle = editing ? "Edit Friend" : "Add Friend";
     const submitBtn = editing ? (
@@ -65,31 +102,28 @@ export default class FriendForm extends Component {
     );
 
     return (
-      <StyledForm
-        onSubmit={event =>
-          editing ? updateFriend(event) : handleSubmitFriend(event)
-        }
-      >
+      <StyledForm onSubmit={event => this.submit(event)}>
+        <Link to="/">View Friends</Link>
         <h3>{formTitle}</h3>
         <input
           type="text"
           name="name"
           value={name}
-          onChange={event => handleChangeFriend(event)}
+          onChange={event => this.handleChangeFriend(event)}
           placeholder="Name"
         />
         <input
           type="email"
           name="email"
           value={email}
-          onChange={event => handleChangeFriend(event)}
+          onChange={event => this.handleChangeFriend(event)}
           placeholder="Email"
         />
         <input
           type="number"
           name="age"
           value={age}
-          onChange={event => handleChangeFriend(event)}
+          onChange={event => this.handleChangeFriend(event)}
           placeholder="Age"
         />
         {submitBtn}
